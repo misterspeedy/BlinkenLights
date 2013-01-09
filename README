@@ -1,0 +1,52 @@
+BlinkenLights is a set of .NET extensions for ThingM's blink(1) multi-colored LED.
+
+What You Need
+=============
+
+To run BlinkenLights, you'll need at least one blink(1) LED, which you can get here: http:/thingm.com.
+
+You'll also need Visual Studio 2012.
+
+Getting Started
+===============
+
+Get the source and build.  Plug in your blink(1).  Run the Demo project and watch the console window.
+
+What BlinkenLights Gives You
+============================
+
+The basic .NET library for the blink(1) allows you to set blink(1)'s color and to fade between colors.  That's about it.
+
+The BlinkenLights type adds the following features:
+
+- The ability to set the LED colour using the constants in System.Drawing.Color, which supplements the native method of passing R/G/B values.
+
+- The ability to switch on the LED for a specified length of time, without the calling thread blocking.
+
+- The ability to flash the LED repeatedly between two colours, again without the calling thread blocking.  Flashing can continue for a specified number of iterations, or until some specified condition returns 'true'.
+
+What's The Point?
+=================
+
+See ThingM's web site (http:/thingm.com) for an explanation of the background to blink(1).
+
+The point of BlinkenLights is to:
+
+- extend the very basic software functionality provided by ThingM.
+
+- illustrate how F# and C# can interact to provide interesting features with very concise code.
+
+- illustrate some basic asynchronous processing in F#.
+
+Known Issues and Limitations
+============================
+
+BlinkenLights uses Tomas Petricek's ThrottlingAgent type.  This is used to ensure that extended-time functions like FlashUntil do not block the calling thread, but that these functions themselves run synchronously with one another (ie. if you call FlashUntil twice in succession, the second call doesn't start executing until the first one finishes).  However ThrottlingAgent does effectively use an unbounded queue, so if you send a large number of requests in quick succession you are likely to run out of memory.
+
+Acknowledgements
+================
+
+Throttling Agent - Tomas Petricek: http://fssnip.net/snippet/5o/1
+(I have fixed what I believe to be a bug in this code - see comments in code.)
+
+Blink1Lib - Basic blink(1) Library for .net - ThingM
