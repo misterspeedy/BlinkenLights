@@ -8,7 +8,7 @@ open ThrottlingAgent
 type BlinkenLight() = 
     inherit Blink1()
     let mutable RGB = 0uy, 0uy, 0uy
-    let ta = new ThrottlingAgent(1)
+    let bgr = new BackgroundRunner()
 
     member private bl.doSetRGB(R : byte, G : byte, B : byte) = 
         RGB <- R, G, B
@@ -52,7 +52,7 @@ type BlinkenLight() =
     /// keeping each color on for the specified lengths of time, and repeating until
     /// the condition function returns true.  (Does not block the calling thread.)
     member bl.FlashUntil(condition : unit -> bool, R : byte, G : byte, B : byte, onMs : int, offMs : int) =
-        ta.DoWork(async {
+        bgr.DoWork(async {
                             while condition() do
                                 let prevRGB = RGB
                                 bl.doSetRGB(R, G, B)

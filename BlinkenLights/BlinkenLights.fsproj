@@ -44,7 +44,7 @@
   <ItemGroup>
     <None Include="Script.fsx" />
     <None Include="packages.config" />
-    <Compile Include="ThrottlingAgent.fs" />
+    <Compile Include="BackgroundRunner.fs" />
     <Compile Include="BlinkenLight.fs" />
   </ItemGroup>
   <ItemGroup>
