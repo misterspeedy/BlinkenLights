@@ -83,3 +83,6 @@ type BlinkenLight() =
     member bl.FlashCount(count : int, color : Color, onMs : int, offMs : int) =
         bl.FlashCount(count, color.R, color.G, color.B, onMs, offMs)
 
+    /// Cancels any currently runnng Flash... operation.
+    member bl.CancelFlashing() =
+        bgr.Cancel()

@@ -31,7 +31,7 @@ let main argv =
     Console.WriteLine("(Main thread has continued.)")
     wait()
 
-    Console.WriteLine("Flashing orange/black for five seconds.")
+    Console.WriteLine("Flashing orange/black for five seconds, or until you hit a key.")
     blinkenLight.SetColor(Color.Black)
 
     let haveElapsed ms =
@@ -42,12 +42,15 @@ let main argv =
     blinkenLight.FlashUntil((haveElapsed 5000.), Color.Orange, 700, 400) 
     Console.WriteLine("(Main thread has continued.)")
     wait()
+    blinkenLight.CancelFlashing()
 
-    Console.WriteLine("Flashing rapidly red/blue 50 times.")
+    Console.WriteLine("Flashing rapidly red/blue 50 times, or until you hit a key.")
     blinkenLight.SetColor(Color.Red)
     blinkenLight.FlashCount(50, Color.Blue, 100, 100) 
     Console.WriteLine("(Main thread has continued.)")
     wait()
+    blinkenLight.CancelFlashing()
+
     blinkenLight.SetColor(Color.Black)  
 
     let cpuCounter = new PerformanceCounter(CategoryName="Processor", CounterName="% Processor Time", InstanceName = "_Total")

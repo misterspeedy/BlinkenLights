@@ -1,5 +1,7 @@
 ﻿module ThrottlingAgent
 
+open System.Threading
+
 /// Message type used by the agent - contains queueing 
 /// of work items and notification of completion.
 type internal ThrottlingAgentMessage = 
@@ -8,6 +10,8 @@ type internal ThrottlingAgentMessage =
     
 /// Represents an agent that runs operations in the background, one at a time.
 type BackgroundRunner() = 
+  let mutable cts = new CancellationTokenSource()
+
   let agent = MailboxProcessor.Start(fun agent -> 
 
     let rec waiting () = 
@@ -21,12 +25,18 @@ type BackgroundRunner() =
       | Completed -> 
           return! working()
       | Work work ->
-          async { try do! work 
-                  finally agent.Post(Completed) }
-          |> Async.Start
+          let asyn = async { try do! work 
+                             finally agent.Post(Completed) }
+          Async.Start(asyn, cts.Token)
           return! waiting () }
 
     working())      
 
-  /// Queue the specified asynchronous workflow for processing
+  /// Queues the specified asynchronous workflow for processing.
   member x.DoWork(work) = agent.Post(Work work)
+
+  /// Cancel the current operation
+  member x.Cancel() = 
+    cts.Cancel()
+    // Respawn the cancellation source as it has been 'used up':
+    cts <- new CancellationTokenSource() 
