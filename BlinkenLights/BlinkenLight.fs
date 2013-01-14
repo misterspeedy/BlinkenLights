@@ -2,7 +2,7 @@
 
 open Blink1Lib
 open System.Drawing
-open ThrottlingAgent
+open BackgroundRunner
 
 /// Extensions to blink(1)'s Blink1() class.
 type BlinkenLight() = 
@@ -53,7 +53,7 @@ type BlinkenLight() =
     /// the condition function returns true.  (Does not block the calling thread.)
     member bl.FlashUntil(condition : unit -> bool, R : byte, G : byte, B : byte, onMs : int, offMs : int) =
         bgr.DoWork(async {
-                            while condition() do
+                            while not (condition()) do
                                 let prevRGB = RGB
                                 bl.doSetRGB(R, G, B)
                                 do! Async.Sleep(onMs)
@@ -74,7 +74,7 @@ type BlinkenLight() =
         let countDone() =
             let counter = ref 0
             fun () -> counter := counter.Value + 1
-                      counter.Value <= count
+                      counter.Value > count
         bl.FlashUntil(countDone(), R, G, B, onMs, offMs)
 
     /// Alternates between the specified System.Drawing.Color and the previously set color,

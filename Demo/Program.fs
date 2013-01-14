@@ -37,7 +37,7 @@ let main argv =
     let haveElapsed ms =
         let start = DateTime.Now
         fun () -> let current = DateTime.Now
-                  (current - start).TotalMilliseconds < ms
+                  (current - start).TotalMilliseconds > ms
 
     blinkenLight.FlashUntil((haveElapsed 5000.), Color.Orange, 700, 400) 
     Console.WriteLine("(Main thread has continued.)")

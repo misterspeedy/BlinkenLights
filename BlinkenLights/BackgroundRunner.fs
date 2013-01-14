@@ -1,4 +1,4 @@
-﻿module ThrottlingAgent
+﻿module BackgroundRunner
 
 open System.Threading
 
