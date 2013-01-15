@@ -25,6 +25,8 @@ The BlinkenLights type adds the following features:
 
 - The ability to flash the LED repeatedly between two colours, again without the calling thread blocking.  Flashing can continue for a specified number of iterations, or until some specified condition returns 'true'.
 
+- The ability to cycle between an array of colors, without the calling thread blocking.
+
 What's The Point?
 =================
 
