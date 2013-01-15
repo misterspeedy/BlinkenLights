@@ -40,15 +40,9 @@ The point of BlinkenLights is to:
 
 - illustrate some basic asynchronous processing in F#.
 
-Known Issues and Limitations
-============================
-
-BlinkenLights uses Tomas Petricek's ThrottlingAgent type.  This is used to ensure that extended-time functions like FlashUntil do not block the calling thread, but that these functions themselves run synchronously with one another (ie. if you call FlashUntil twice in succession, the second call doesn't start executing until the first one finishes).  However ThrottlingAgent does effectively use an unbounded queue, so if you send a large number of requests in quick succession you are likely to run out of memory.
-
 Acknowledgements
 ================
 
-Throttling Agent - Tomas Petricek: http://fssnip.net/snippet/5o/1
-(I have fixed what I believe to be a bug in this code - see comments in code.)
+Backgrounding code is derived from ThrottlingAgent by Tomas Petricek: http://fssnip.net/snippet/5o/1
 
 Blink1Lib - Basic blink(1) Library for .net - ThingM
