@@ -11,7 +11,7 @@ let wait() =
 let main argv = 
     let blinkenLight = BlinkenLight()
     blinkenLight.``open``() |> ignore
-
+    
     Console.WriteLine("Setting 255, 50, 50")
     blinkenLight.SetRGB(255uy, 50uy, 50uy)
     wait()
@@ -48,6 +48,30 @@ let main argv =
     blinkenLight.SetColor(Color.Red)
     blinkenLight.FlashCount(50, Color.Blue, 100, 100) 
     Console.WriteLine("(Main thread has continued.)")
+    wait()
+    blinkenLight.CancelFlashing()
+
+    Console.WriteLine("Acting as a metronome (3/4 time)")
+    blinkenLight.Cycle([|Color.GreenYellow
+                         Color.Black
+                         Color.Green
+                         Color.Black
+                         Color.Green
+                         Color.Black|],
+                       [|250|])
+    wait()
+    blinkenLight.CancelFlashing()
+
+    Console.WriteLine("Acting as a metronome (4/4 time)")
+    blinkenLight.Cycle([|Color.GreenYellow
+                         Color.Black
+                         Color.DarkGoldenrod
+                         Color.Black
+                         Color.Green
+                         Color.Black
+                         Color.DarkGoldenrod
+                         Color.Black|],
+                       [|250|])
     wait()
     blinkenLight.CancelFlashing()
 

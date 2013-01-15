@@ -1,6 +1,7 @@
 ﻿namespace BlinkenLights
 
 open Blink1Lib
+open System
 open System.Drawing
 open BackgroundRunner
 
@@ -37,6 +38,26 @@ type BlinkenLight() =
     /// Overrides inherited setRGB to ensure that we always keep a copy of the RGB setting (also we have a
     /// different argument order here from the base class).
     member bl.fadeToRGB = bl.FadeToRGB
+
+    /// Cycles between the specified colors, keeping each color on for the specified duration.
+    /// Lengths of colors and duration arrays can differ; values are used successively from
+    /// each array.  Stop cycling by calling Cancel().
+    member bl.Cycle(colors : array<Color>, mss : array<int>) =
+        if colors.Length = 0 then
+            raise (new ArgumentException("Colors array cannot be empty"))
+        if mss.Length = 0 then
+            raise (new ArgumentException("Mss array cannot be empty"))
+        bgr.DoWork(async {
+                            let colorIndex = ref 0
+                            let msIndex = ref 0
+                            while true do
+                                let color = colors.[colorIndex.Value]
+                                let ms = mss.[msIndex.Value]
+                                bl.SetColor(color)
+                                do! Async.Sleep(ms)
+                                colorIndex := (colorIndex.Value + 1) % colors.Length
+                                msIndex := (msIndex.Value + 1) % mss.Length
+                        })
 
     /// Changes the RGB color for the specified period, then reverts to the previous color.
     /// (Does not block the calling thread.)
